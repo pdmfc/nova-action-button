@@ -1,0 +1,37 @@
+{
+    "name": "pdmfc/nova-action-button",
+    "description": "A Laravel Nova field to run actions.",
+    "keywords": [
+        "laravel",
+        "nova"
+    ],
+    "license": "MIT",
+    "homepage": "https://github.com/pdmfc/nova-action-button",
+    "authors": [
+        {
+            "name": "João Santos",
+            "email": "joao.santos@pdmfc.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Pdmfc\\NovaFields\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Pdmfc\\NovaFields\\ActionButtonFieldServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
