@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button class="btn btn-default btn-primary" @click="confirmActionModalOpened = true">{{ __('Run') }}</button>
+    <button class="btn btn-default btn-primary" @click="confirmActionModalOpened = true" :disabled="field.readonly">{{ __('Run') }}</button>
 
 <!--     Action Confirmation Modal -->
       <portal to="modals" transition="fade-transition">

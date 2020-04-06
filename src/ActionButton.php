@@ -14,14 +14,14 @@ class ActionButton extends Field
     public $component = 'nova-action-button';
 
     /**
-     * @param string $action
+     * @param string|null $action
      * @param $resourceId
      * @return ActionButton
      */
-    public function action(string $action, $resourceId): ActionButton
+    public function action($action, $resourceId): ActionButton
     {
         return $this->withMeta([
-            'action' => new $action(),
+            'action' => $action ? new $action() : null,
             'resourceId' => $resourceId,
         ]);
     }

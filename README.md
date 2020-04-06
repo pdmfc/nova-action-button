@@ -33,6 +33,22 @@ The `action()` method requires two params - the action class name, and the targe
 ![Basic example](images/basic_example.png)
 ---
 
+### Disabling button
+
+You can use the native Laravel nova [readonly()](https://nova.laravel.com/docs/3.0/resources/fields.html#readonly-fields) method to prevent users from clicking the button:
+
+```php
+ActionButton::make('Action')
+    ->action(ChangeRole::class, $this->id)
+    ->readonly(function () {
+        return $this->role->name === 'admin';
+    })
+```
+
+![Disabling the button](images/disable_example.png)
+
+
+
 ## How to contribute
 
 - clone the repo
