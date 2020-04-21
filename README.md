@@ -28,10 +28,9 @@ public function fields()
 }
 ```
 
-The `action()` method requires two params - the action class name, and the target resource id. 
+The `action()` method requires two params - the action class name, and the target resource id.
 
-![Basic example](images/basic_example.png)
----
+## ![Basic example](images/basic_example.png)
 
 ### Disabling button
 
@@ -47,7 +46,9 @@ ActionButton::make('Action')
 
 ![Disabling the button](images/disable_example.png)
 
+## Caveats
 
+- Currently, in order to use this field, you still have to declare the action in your resource `actions()` method.
 
 ## How to contribute
 
