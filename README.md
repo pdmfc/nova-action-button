@@ -2,6 +2,7 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/pdmfc/nova-action-button?style=flat-square)](https://packagist.org/packages/pdmfc/nova-action-button)
 ![Licence](https://img.shields.io/github/license/pdmfc/nova-action-button?style=flat-square)
+[![Total Downloads](https://poser.pugx.org/pdmfc/nova-action-button/downloads)](https://packagist.org/packages/pdmfc/nova-action-button?format=flat-square)
 
 This package allows you to execute an action directly on your resource table view.
 
