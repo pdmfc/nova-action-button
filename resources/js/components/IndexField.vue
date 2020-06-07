@@ -1,6 +1,12 @@
 <template>
   <div>
-    <button class="btn btn-default btn-primary" @click="confirmActionModalOpened = true" :disabled="field.readonly">{{ __('Run') }}</button>
+    <button 
+      class="btn btn-default btn-primary" 
+      @click="confirmActionModalOpened = true" 
+      :disabled="field.readonly"
+    >
+      {{ buttonText }}
+    </button>
 
 <!--     Action Confirmation Modal -->
       <portal to="modals" transition="fade-transition">
@@ -167,6 +173,10 @@
           viaRelationship: this.queryString.viaRelationship,
         }
       },
+
+      buttonText() {
+        return this.field.text || this.__('Run');
+      }
     }
 }
 </script>

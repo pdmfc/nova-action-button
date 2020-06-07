@@ -25,4 +25,14 @@ class ActionButton extends Field
             'resourceId' => $resourceId,
         ]);
     }
+
+    /**
+     * The text to be displayed inside the button.
+     *
+     * @param string $text
+     */
+    public function text(string $text)
+    {
+        return $this->withMeta(compact('text'));
+    }
 }
