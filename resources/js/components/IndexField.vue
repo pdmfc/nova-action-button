@@ -8,21 +8,21 @@
       {{ buttonText }}
     </button>
 
-<!--     Action Confirmation Modal -->
-      <portal to="modals" transition="fade-transition">
-        <component
-          v-if="confirmActionModalOpened"
-          class="text-left"
-          :is="field.action.component"
-          :working="working"
-          :selected-resources="selectedResources"
-          :resource-name="resourceName"
-          :action="selectedAction"
-          :errors="errors"
-          @confirm="executeAction"
-          @close="confirmActionModalOpened = false"
-        />
-      </portal>
+    <!-- Action Confirmation Modal -->
+    <portal to="modals" transition="fade-transition">
+      <component
+        v-if="confirmActionModalOpened"
+        class="text-left"
+        :is="field.action.component"
+        :working="working"
+        :selected-resources="selectedResources"
+        :resource-name="resourceName"
+        :action="selectedAction"
+        :errors="errors"
+        @confirm="executeAction"
+        @close="confirmActionModalOpened = false"
+      />
+    </portal>
   </div>
 </template>
 
