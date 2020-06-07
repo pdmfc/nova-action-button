@@ -47,6 +47,13 @@ ActionButton::make('Action')
 
 ![Disabling the button](images/disable_example.png)
 
+### Change the button text
+
+To edit the button text content, use the `text()` method.
+```php
+->text('Execute')
+```
+
 ## Caveats
 
 - Currently, in order to use this field, you still have to declare the action in your resource `actions()` method.
@@ -77,3 +84,7 @@ ActionButton::make('Action')
 - run `composer update pdmfc/nova-action-button`
 
 You're now ready to start contributing!
+
+## Changelog
+
+Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
