@@ -3,6 +3,7 @@
 namespace Pdmfc\NovaFields;
 
 use Laravel\Nova\Fields\Field;
+use Laravel\Nova\Actions\Action;
 
 class ActionButton extends Field
 {
@@ -14,14 +15,14 @@ class ActionButton extends Field
     public $component = 'nova-action-button';
 
     /**
-     * @param string|null $action
+     * @param Action|string|null $action
      * @param $resourceId
      * @return ActionButton
      */
     public function action($action, $resourceId): ActionButton
     {
         return $this->withMeta([
-            'action' => $action ? new $action() : null,
+            'action' => \is_string($action) ? new $action() : $action,
             'resourceId' => $resourceId,
         ]);
     }
