@@ -35,7 +35,7 @@ export default {
     mixins: [FormField, HandlesValidationErrors, InteractsWithResourceInformation],
 
     props: {
-      resource: String,  
+      resource: Object,
       resourceName: String,
       resourceId: Number,
       field: Object,
@@ -157,7 +157,7 @@ export default {
 
     computed: {
         selectedResources() {
-            return this.field.resourceId;
+            return String(this.field.resourceId);
         },
 
         selectedAction() {
