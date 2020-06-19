@@ -25,11 +25,12 @@ public function fields()
     return [
         ActionButton::make('Action')
             ->action(ChangeRole::class, $this->id)
+            //->action(new ChangeRole(), $this->id) using a new instance
     ];
 }
 ```
 
-The `action()` method requires two params - the action class name, and the target resource id.
+The `action()` method requires two params - the action class name or a new instance, and the target resource id.
 
 ## ![Basic example](images/basic_example.png)
 
