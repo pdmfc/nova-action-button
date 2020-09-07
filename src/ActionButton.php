@@ -21,14 +21,12 @@ class ActionButton extends Field
      */
     public function action($action, $resourceId): ActionButton
     {
-        $actionInst = null;
 
-        if ($action) {
-            $actionInst = \is_string($action) ? new $action() : $action;
-            $actionInst->withMeta([
-                'resourceId' => $resourceId
-            ]);
-        }
+        $actionInst = \is_string($action) ? new $action() : $action;
+
+        $actionInst->withMeta([
+            'resourceId' => $resourceId
+        ]);
 
         return $this->withMeta([
             'action' => $actionInst,
