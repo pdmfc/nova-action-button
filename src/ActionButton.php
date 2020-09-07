@@ -24,9 +24,11 @@ class ActionButton extends Field
 
         $actionInst = \is_string($action) ? new $action() : $action;
 
-        $actionInst->withMeta([
-            'resourceId' => $resourceId
-        ]);
+        if ($actionInst) {
+            $actionInst->withMeta([
+                'resourceId' => $resourceId
+            ]);
+        }
 
         return $this->withMeta([
             'action' => $actionInst,
