@@ -1,7 +1,8 @@
 <template>
   <div>
     <button 
-      class="btn btn-default btn-primary" 
+      class="btn btn-default btn-primary"
+      :class="{hidden:hidden}"
       @click="confirmActionModalOpened = true" 
       :disabled="field.readonly"
     >
@@ -176,6 +177,10 @@
 
       buttonText() {
         return this.field.text || this.__('Run');
+      },
+
+      hidden() {
+        return this.field.hidden || false;
       }
     }
 }
