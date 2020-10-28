@@ -45,4 +45,14 @@ class ActionButton extends Field
     {
         return $this->withMeta(compact('text'));
     }
+
+    /**
+     * Hide button
+     *
+     * @param callable
+     */
+    public function hide($callback)
+    {
+        return $this->withMeta(['hidden' => call_user_func($callback)]);
+    }
 }
