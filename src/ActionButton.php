@@ -57,16 +57,18 @@ class ActionButton extends Field
     }
 
     /**
+     * Enable loading on button. 
      *
-     * @param bool
+     * @param bool $setLoader
      */
-    public function setLoader(bool $setLoader = false) {
+    public function setLoader(bool $setLoader = true) {
         return $this->withMeta(compact('setLoader'));
     }
 
     /**
+     * Change loading color on button
      *
-     * @param bool
+     * @param string $loaderColor
      */
     public function loaderColor(string $loaderColor = '#000') {
         return $this->withMeta(compact('loaderColor'));
