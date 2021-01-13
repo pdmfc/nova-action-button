@@ -55,4 +55,23 @@ class ActionButton extends Field
     {
         return $this->withMeta(['hidden' => call_user_func($callback)]);
     }
+
+    /**
+     * Enable loading animation. 
+     *
+     */
+    public function showLoadingAnimation()
+    {
+        return $this->withMeta(['showLoadingAnimation' => true]);
+    }
+
+    /**
+     * Change loading animation color
+     *
+     * @param string $loadingColor
+     */
+    public function loadingColor(string $loadingColor)
+    {
+        return $this->withMeta(compact('loadingColor'));
+    }
 }
