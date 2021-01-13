@@ -55,4 +55,20 @@ class ActionButton extends Field
     {
         return $this->withMeta(['hidden' => call_user_func($callback)]);
     }
+
+    /**
+     *
+     * @param bool
+     */
+    public function setLoader(bool $setLoader = false) {
+        return $this->withMeta(compact('setLoader'));
+    }
+
+    /**
+     *
+     * @param bool
+     */
+    public function loaderColor(string $loaderColor = '#000') {
+        return $this->withMeta(compact('loaderColor'));
+    }
 }
