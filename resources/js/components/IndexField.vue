@@ -6,7 +6,7 @@
       @click="openConfirmationModal"
       :disabled="disabled"
     >
-      <loading v-if="loading" :color="loadingColor" />
+      <loading v-if="loading" :color="field.loadingColor" />
       <span v-else>{{ buttonText }}</span>
     </button>
 
@@ -200,10 +200,6 @@ export default {
 
     loading() {
       return (this.field.showLoadingAnimation || false) && this.working;
-    },
-
-    loadingColor() {
-      return this.field.loadingColor || "#000";
     },
 
     disabled() {

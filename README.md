@@ -55,12 +55,12 @@ To edit the button text content, use the `text()` method.
 ->text('Execute')
 ```
 
-### Enable the loading on button and change color
+### Enable the loading animation on button and change color
 
-To enable the loading on button and change color, use `setLoader(true)` and `loaderColor('#fff')` method.
+To enable the loading animation on button and change color, use `showLoadingAnimation()` and `loadingColor('#fff')` method.
 ```php
-->setLoader(true)
-->loaderColor('#fff')
+->showLoadingAnimation()
+->loadingColor('#fff') # default is #000
 ```
 
 ## Caveats

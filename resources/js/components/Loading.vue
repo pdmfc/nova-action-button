@@ -78,6 +78,11 @@
 <script>
 export default {
   name: "Loading",
-  props: ["color"],
+  props: {
+    color: {
+      type: String,
+      default: '#000'
+    }
+  },
 };
 </script>
