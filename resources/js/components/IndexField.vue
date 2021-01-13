@@ -1,43 +1,12 @@
 <template>
   <div>
     <button
-      class="btn btn-default btn-primary flex items-center justify-center	"
-      :class="{hidden:hidden}"
+      class="btn btn-default btn-primary flex items-center justify-center"
+      :class="{ hidden: hidden }"
       @click="openConfirmationModal"
-      :disabled="field.readonly || working"
+      :disabled="disabled"
     >
-      <svg width="40" height="30" viewBox="0 0 120 30" xmlns="http://www.w3.org/2000/svg" :fill="field.loaderColor" v-if="field.setLoader && working">
-        <circle cx="15" cy="15" r="15">
-          <animate attributeName="r" from="15" to="15"
-                  begin="0s" dur="0.8s"
-                  values="15;9;15" calcMode="linear"
-                  repeatCount="indefinite" />
-          <animate attributeName="fill-opacity" from="1" to="1"
-                  begin="0s" dur="0.8s"
-                  values="1;.5;1" calcMode="linear"
-                  repeatCount="indefinite" />
-        </circle>
-        <circle cx="60" cy="15" r="9" fill-opacity="0.3">
-            <animate attributeName="r" from="9" to="9"
-                    begin="0s" dur="0.8s"
-                    values="9;15;9" calcMode="linear"
-                    repeatCount="indefinite" />
-            <animate attributeName="fill-opacity" from="0.5" to="0.5"
-                    begin="0s" dur="0.8s"
-                    values=".5;1;.5" calcMode="linear"
-                    repeatCount="indefinite" />
-        </circle>
-        <circle cx="105" cy="15" r="15">
-            <animate attributeName="r" from="15" to="15"
-                    begin="0s" dur="0.8s"
-                    values="15;9;15" calcMode="linear"
-                    repeatCount="indefinite" />
-            <animate attributeName="fill-opacity" from="1" to="1"
-                    begin="0s" dur="0.8s"
-                    values="1;.5;1" calcMode="linear"
-                    repeatCount="indefinite" />
-        </circle>
-      </svg>
+      <loading v-if="loading" :color="loadingColor" />
       <span v-else>{{ buttonText }}</span>
     </button>
 
@@ -60,161 +29,186 @@
 </template>
 
 <script>
-  import { Errors, FormField, HandlesValidationErrors, InteractsWithResourceInformation } from 'laravel-nova'
+import {
+  Errors,
+  FormField,
+  HandlesValidationErrors,
+  InteractsWithResourceInformation,
+} from "laravel-nova";
 
-  export default {
-    mixins: [FormField, HandlesValidationErrors, InteractsWithResourceInformation],
+import Loading from "./Loading";
 
-    props: {
-      resourceName: String,
-      field: Object,
-      queryString: {
-        type: Object,
-        default: () => ({
-          currentSearch: '',
-          encodedFilters: '',
-          currentTrashed: '',
-          viaResource: '',
-          viaResourceId: '',
-          viaRelationship: '',
-        }),
+export default {
+  mixins: [
+    FormField,
+    HandlesValidationErrors,
+    InteractsWithResourceInformation,
+  ],
+  components: {
+    Loading,
+  },
+  props: {
+    resourceName: String,
+    field: Object,
+    queryString: {
+      type: Object,
+      default: () => ({
+        currentSearch: "",
+        encodedFilters: "",
+        currentTrashed: "",
+        viaResource: "",
+        viaResourceId: "",
+        viaRelationship: "",
+      }),
+    },
+  },
+
+  data: () => ({
+    working: false,
+    confirmActionModalOpened: false,
+  }),
+  methods: {
+    /**
+     * Confirm with the user that they actually want to run the selected action.
+     */
+    openConfirmationModal() {
+      this.working = true;
+      this.confirmActionModalOpened = true;
+    },
+
+    /**
+     * Close the action confirmation modal.
+     */
+    closeConfirmationModal() {
+      this.confirmActionModalOpened = false;
+      this.errors = new Errors();
+      this.working = false;
+    },
+
+    /**
+     * Execute the selected action.
+     */
+    executeAction() {
+      this.working = true;
+
+      if (this.selectedResources.length == 0) {
+        alert(this.__("Please select a resource to perform this action on."));
+        return;
+      }
+
+      Nova.request({
+        method: "post",
+        url: this.endpoint || `/nova-api/${this.resourceName}/action`,
+        params: this.actionRequestQueryString,
+        data: this.actionFormData(),
+      })
+        .then((response) => {
+          this.confirmActionModalOpened = false;
+          this.handleActionResponse(response.data);
+          this.working = false;
+        })
+        .catch((error) => {
+          this.working = false;
+
+          if (error.response.status == 422) {
+            this.errors = new Errors(error.response.data.errors);
+            Nova.error(this.__("There was a problem executing the action."));
+          }
+        });
+    },
+
+    /**
+     * Gather the action FormData for the given action.
+     */
+    actionFormData() {
+      return _.tap(new FormData(), (formData) => {
+        formData.append("resources", this.selectedResources);
+
+        _.each(this.selectedAction.fields, (field) => {
+          field.fill(formData);
+        });
+      });
+    },
+
+    /**
+     * Handle the action response. Typically either a message, download or a redirect.
+     */
+    handleActionResponse(data) {
+      if (data.message) {
+        this.$parent.$emit("actionExecuted");
+        Nova.$emit("action-executed");
+        Nova.success(data.message);
+      } else if (data.deleted) {
+        this.$parent.$emit("actionExecuted");
+        Nova.$emit("action-executed");
+      } else if (data.danger) {
+        this.$parent.$emit("actionExecuted");
+        Nova.$emit("action-executed");
+        Nova.error(data.danger);
+      } else if (data.download) {
+        let link = document.createElement("a");
+        link.href = data.download;
+        link.download = data.name;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } else if (data.redirect) {
+        window.location = data.redirect;
+      } else if (data.push) {
+        this.$router.push(data.push);
+      } else if (data.openInNewTab) {
+        window.open(data.openInNewTab, "_blank");
+      } else {
+        this.$parent.$emit("actionExecuted");
+        Nova.$emit("action-executed");
+        Nova.success(this.__("The action ran successfully!"));
       }
     },
+  },
 
-    data: () => ({
-      working: false,
-      confirmActionModalOpened: false,
-    }),
-    methods: {
-      /**
-       * Confirm with the user that they actually want to run the selected action.
-       */
-      openConfirmationModal() {
-        this.working = true;
-        this.confirmActionModalOpened = true
-      },
-
-      /**
-       * Close the action confirmation modal.
-       */
-      closeConfirmationModal() {
-        this.confirmActionModalOpened = false
-        this.errors = new Errors()
-        this.working = false;
-      },
-
-      /**
-       * Execute the selected action.
-       */
-      executeAction() {
-        this.working = true
-
-        if (this.selectedResources.length == 0) {
-          alert(this.__('Please select a resource to perform this action on.'))
-          return
-        }
-
-        Nova.request({
-          method: 'post',
-          url: this.endpoint || `/nova-api/${this.resourceName}/action`,
-          params: this.actionRequestQueryString,
-          data: this.actionFormData(),
-        })
-          .then(response => {
-            this.confirmActionModalOpened = false
-            this.handleActionResponse(response.data)
-            this.working = false
-          })
-          .catch(error => {
-            this.working = false
-
-            if (error.response.status == 422) {
-              this.errors = new Errors(error.response.data.errors)
-              Nova.error(this.__('There was a problem executing the action.'))
-            }
-          })
-      },
-
-      /**
-       * Gather the action FormData for the given action.
-       */
-      actionFormData() {
-        return _.tap(new FormData(), formData => {
-          formData.append('resources', this.selectedResources)
-
-          _.each(this.selectedAction.fields, field => {
-            field.fill(formData)
-          })
-        })
-      },
-
-      /**
-       * Handle the action response. Typically either a message, download or a redirect.
-       */
-      handleActionResponse(data) {
-        if (data.message) {
-          this.$parent.$emit('actionExecuted')
-          Nova.$emit('action-executed')
-          Nova.success(data.message)
-        } else if (data.deleted) {
-          this.$parent.$emit('actionExecuted')
-          Nova.$emit('action-executed')
-        } else if (data.danger) {
-          this.$parent.$emit('actionExecuted')
-          Nova.$emit('action-executed')
-          Nova.error(data.danger)
-        } else if (data.download) {
-          let link = document.createElement('a')
-          link.href = data.download
-          link.download = data.name
-          document.body.appendChild(link)
-          link.click()
-          document.body.removeChild(link)
-        } else if (data.redirect) {
-          window.location = data.redirect
-        } else if (data.push) {
-          this.$router.push(data.push)
-        } else if (data.openInNewTab) {
-          window.open(data.openInNewTab, '_blank')
-        } else {
-          this.$parent.$emit('actionExecuted')
-          Nova.$emit('action-executed')
-          Nova.success(this.__('The action ran successfully!'))
-        }
-      },
+  computed: {
+    selectedResources() {
+      return this.field.resourceId;
     },
 
-    computed: {
-      selectedResources() {
-        return this.field.resourceId;
-      },
+    selectedAction() {
+      return this.field.action;
+    },
 
-      selectedAction() {
-        return this.field.action;
-      },
+    /**
+     * Get the query string for an action request.
+     */
+    actionRequestQueryString() {
+      return {
+        action: this.selectedAction.uriKey,
+        search: this.queryString.currentSearch,
+        filters: this.queryString.encodedFilters,
+        trashed: this.queryString.currentTrashed,
+        viaResource: this.queryString.viaResource,
+        viaResourceId: this.queryString.viaResourceId,
+        viaRelationship: this.queryString.viaRelationship,
+      };
+    },
 
-      /**
-       * Get the query string for an action request.
-       */
-      actionRequestQueryString() {
-        return {
-          action: this.selectedAction.uriKey,
-          search: this.queryString.currentSearch,
-          filters: this.queryString.encodedFilters,
-          trashed: this.queryString.currentTrashed,
-          viaResource: this.queryString.viaResource,
-          viaResourceId: this.queryString.viaResourceId,
-          viaRelationship: this.queryString.viaRelationship,
-        }
-      },
+    buttonText() {
+      return this.field.text || this.__("Run");
+    },
 
-      buttonText() {
-        return this.field.text || this.__('Run');
-      },
+    hidden() {
+      return this.field.hidden || false;
+    },
 
-      hidden() {
-        return this.field.hidden || false;
-      },
-    }
-}
+    loading() {
+      return (this.field.showLoadingAnimation || false) && this.working;
+    },
+
+    loadingColor() {
+      return this.field.loadingColor || "#000";
+    },
+
+    disabled() {
+      return this.field.readonly || this.working;
+    },
+  },
+};
 </script>

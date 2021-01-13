@@ -61,8 +61,8 @@ class ActionButton extends Field
      *
      * @param bool $setLoader
      */
-    public function setLoader(bool $setLoader = true) {
-        return $this->withMeta(compact('setLoader'));
+    public function showLoadingAnimation(bool $showLoadingAnimation = true) {
+        return $this->withMeta(compact('showLoadingAnimation'));
     }
 
     /**
@@ -70,7 +70,7 @@ class ActionButton extends Field
      *
      * @param string $loaderColor
      */
-    public function loaderColor(string $loaderColor = '#000') {
-        return $this->withMeta(compact('loaderColor'));
+    public function loadingColor(string $loadingColor = '#000') {
+        return $this->withMeta(compact('loadingColor'));
     }
 }
