@@ -59,10 +59,15 @@ class ActionButton extends Field
     /**
      * Enable loading animation. 
      *
+     * @param $callback
      */
-    public function showLoadingAnimation()
+    public function showLoadingAnimation($callback = true)
     {
-        return $this->withMeta(['showLoadingAnimation' => true]);
+        return $this->withMeta(
+            [
+                'showLoadingAnimation' => is_callable($callback) ? $callback() : $callback
+            ]
+        );
     }
 
     /**

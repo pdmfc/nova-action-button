@@ -6,7 +6,7 @@
       @click="openConfirmationModal"
       :disabled="disabled"
     >
-      <loading v-if="loading" :color="field.loadingColor" />
+      <loading v-if="showLoading" :color="field.loadingColor" />
       <span v-else>{{ buttonText }}</span>
     </button>
 
@@ -65,6 +65,7 @@ export default {
 
   data: () => ({
     working: false,
+    loading: false,
     confirmActionModalOpened: false,
   }),
   methods: {
@@ -72,7 +73,7 @@ export default {
      * Confirm with the user that they actually want to run the selected action.
      */
     openConfirmationModal() {
-      this.working = true;
+      this.loading = true;
       this.confirmActionModalOpened = true;
     },
 
@@ -82,7 +83,7 @@ export default {
     closeConfirmationModal() {
       this.confirmActionModalOpened = false;
       this.errors = new Errors();
-      this.working = false;
+      this.loading = false;
     },
 
     /**
@@ -90,6 +91,7 @@ export default {
      */
     executeAction() {
       this.working = true;
+      this.loading = true;
 
       if (this.selectedResources.length == 0) {
         alert(this.__("Please select a resource to perform this action on."));
@@ -106,9 +108,11 @@ export default {
           this.confirmActionModalOpened = false;
           this.handleActionResponse(response.data);
           this.working = false;
+          this.loading = false;
         })
         .catch((error) => {
           this.working = false;
+          this.loading = false;
 
           if (error.response.status == 422) {
             this.errors = new Errors(error.response.data.errors);
@@ -198,12 +202,12 @@ export default {
       return this.field.hidden || false;
     },
 
-    loading() {
-      return (this.field.showLoadingAnimation || false) && this.working;
+    showLoading() {
+      return (this.field.showLoadingAnimation || false) && this.loading;
     },
 
     disabled() {
-      return this.field.readonly || this.working;
+      return this.field.readonly || ((this.field.showLoadingAnimation || false) && this.loading);
     },
   },
 };
