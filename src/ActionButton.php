@@ -2,8 +2,8 @@
 
 namespace Pdmfc\NovaFields;
 
-use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Actions\Action;
+use Laravel\Nova\Fields\Field;
 
 class ActionButton extends Field
 {
@@ -17,16 +17,14 @@ class ActionButton extends Field
     /**
      * @param Action|string|null $action
      * @param $resourceId
-     * @return ActionButton
      */
     public function action($action, $resourceId): ActionButton
     {
-
         $actionInst = \is_string($action) ? new $action() : $action;
 
         if ($actionInst) {
             $actionInst->withMeta([
-                'resourceId' => $resourceId
+                'resourceId' => $resourceId,
             ]);
         }
 
@@ -38,8 +36,6 @@ class ActionButton extends Field
 
     /**
      * The text to be displayed inside the button.
-     *
-     * @param string $text
      */
     public function text(string $text)
     {
@@ -47,7 +43,7 @@ class ActionButton extends Field
     }
 
     /**
-     * Hide button
+     * Hide button.
      *
      * @param callable
      */
@@ -57,7 +53,7 @@ class ActionButton extends Field
     }
 
     /**
-     * Enable loading animation. 
+     * Enable loading animation.
      *
      * @param $callback
      */
@@ -65,18 +61,24 @@ class ActionButton extends Field
     {
         return $this->withMeta(
             [
-                'showLoadingAnimation' => is_callable($callback) ? $callback() : $callback
+                'showLoadingAnimation' => is_callable($callback) ? $callback() : $callback,
             ]
         );
     }
 
     /**
-     * Change loading animation color
-     *
-     * @param string $loadingColor
+     * Change loading animation color.
      */
     public function loadingColor(string $loadingColor)
     {
         return $this->withMeta(compact('loadingColor'));
+    }
+
+    /**
+     * Change button color.
+     */
+    public function buttonColor(string $buttonColor)
+    {
+        return $this->withMeta(compact('buttonColor'));
     }
 }
