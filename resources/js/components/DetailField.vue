@@ -122,16 +122,17 @@ export default {
          * Handle the action response. Typically either a message, download or a redirect.
          */
         handleActionResponse(data) {
-            this.$parent.$parent.$children[2].$emit('actionExecuted')
+            try {
+              this.$parent.$parent.$children[2].$emit('actionExecuted')
+            } catch (e) {
+              // Somehow didn't work. We continue so that the response is processed anyway.
+            }
             if (data.message) {
-                this.$parent.$parent.$children[2].$emit('actionExecuted')
                 Nova.$emit('action-executed')
                 Nova.success(data.message)
             } else if (data.deleted) {
-                this.$parent.$parent.$children[2].$emit('actionExecuted')
                 Nova.$emit('action-executed')
             } else if (data.danger) {
-                this.$parent.$parent.$children[2].$emit('actionExecuted')
                 Nova.$emit('action-executed')
                 Nova.error(data.danger)
             } else if (data.download) {
@@ -148,7 +149,6 @@ export default {
             } else if (data.openInNewTab) {
                 window.open(data.openInNewTab, '_blank')
             } else {
-                this.$parent.$parent.$children[2].$emit('actionExecuted')
                 Nova.$emit('action-executed')
                 Nova.success(this.__('The action ran successfully!'))
             }
