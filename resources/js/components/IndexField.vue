@@ -3,7 +3,7 @@
     <button
       class="btn btn-default btn-primary flex items-center justify-center"
       :class="{ hidden: hidden }"
-      @click="openConfirmationModal"
+      @click="handleClick"
       :disabled="disabled"
     >
       <loading v-if="showLoading" :color="field.loadingColor" />
@@ -69,6 +69,17 @@ export default {
     confirmActionModalOpened: false,
   }),
   methods: {
+    /**
+     * Determine what to do with the action button click
+     */
+    handleClick() {
+      if(this.withoutConfirmation) {
+        this.executeAction();
+      } else {
+        this.openConfirmationModal();
+      }
+    },
+
     /**
      * Confirm with the user that they actually want to run the selected action.
      */
@@ -209,6 +220,10 @@ export default {
     disabled() {
       return this.field.readonly || ((this.field.showLoadingAnimation || false) && this.loading);
     },
+
+    withoutConfirmation() {
+      return this.field.withoutConfirmation || false;
+    }
   },
 };
 </script>
