@@ -79,4 +79,14 @@ class ActionButton extends Field
     {
         return $this->withMeta(compact('loadingColor'));
     }
+
+    /**
+     * Pass a vue component containing a svg
+     *
+     * @param string $svg
+     */
+    public function svg(string $svg)
+    {
+        return $this->withMeta(['svg' => $svg]);
+    }
 }

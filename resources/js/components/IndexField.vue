@@ -8,6 +8,7 @@
     >
       <loading v-if="showLoading" :color="field.loadingColor" />
       <span v-else>{{ buttonText }}</span>
+      <component v-if="svg" :is="svg"></component>
     </button>
 
     <!-- Action Confirmation Modal -->
@@ -209,6 +210,10 @@ export default {
     disabled() {
       return this.field.readonly || ((this.field.showLoadingAnimation || false) && this.loading);
     },
+
+    svg() {
+      return this.field.svg || false;
+    }
   },
 };
 </script>
