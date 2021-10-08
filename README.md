@@ -63,6 +63,13 @@ To enable the loading animation on button and change color, use `showLoadingAnim
 ->loadingColor('#fff') # default is #000
 ```
 
+### Add a svg to the button
+
+In order to add a svg to the button, you first need to create a vue component containing a svg and then pass the component name to the `svg()` method.
+```php
+->svg('VueComponentName')
+```
+
 ## Caveats
 
 - Currently, in order to use this field, you still have to declare the action in your resource `actions()` method.
