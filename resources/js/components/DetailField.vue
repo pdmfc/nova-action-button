@@ -5,7 +5,7 @@
                 class="btn btn-default btn-primary"
                 @click="confirmActionModalOpened = true"
                 :disabled="field.readonly"
-                :style="`background-color: ${field.buttonColor}`"
+                :style="`background-color: ${field.buttonColor} !important`"
             >
                 {{ buttonText }}
             </button>
