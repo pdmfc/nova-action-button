@@ -6,7 +6,6 @@
       @click="openConfirmationModal"
       :disabled="disabled"
       :style="`background-color: ${field.buttonColor} !important`"
-
     >
       <loading v-if="showLoading" :color="field.loadingColor" />
       <span v-else>{{ buttonText }}</span>

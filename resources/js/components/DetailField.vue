@@ -2,12 +2,13 @@
     <panel-item :field="field">
         <template v-slot:value>
             <button
-                class="btn btn-default btn-primary"
+                class="btn btn-default btn-primary flex items-center justify-center"
                 @click="confirmActionModalOpened = true"
                 :disabled="field.readonly"
                 :style="`background-color: ${field.buttonColor} !important`"
             >
-                {{ buttonText }}
+              <span>{{ buttonText }}</span>
+              <component v-if="svg" :is="svg"></component>
             </button>
 
             <!-- Action Confirmation Modal -->
@@ -182,6 +183,10 @@ export default {
 
         buttonText() {
             return this.field.text || this.__('Run');
+        },
+
+        svg() {
+          return this.field.svg || false;
         }
     }
 }
