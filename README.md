@@ -70,6 +70,13 @@ In order to add a svg to the button, you first need to create a vue component co
 ->svg('VueComponentName')
 ```
 
+### Change button color
+
+To change button color, use `buttonColor('#21b970')` method.
+```php
+->buttonColor('#21b970') # default is .btn-primary color
+```
+
 ## Caveats
 
 - Currently, in order to use this field, you still have to declare the action in your resource `actions()` method.

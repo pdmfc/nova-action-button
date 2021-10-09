@@ -2,8 +2,8 @@
 
 namespace Pdmfc\NovaFields;
 
-use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Actions\Action;
+use Laravel\Nova\Fields\Field;
 
 class ActionButton extends Field
 {
@@ -21,7 +21,6 @@ class ActionButton extends Field
      */
     public function action($action, $resourceId): ActionButton
     {
-
         $actionInst = \is_string($action) ? new $action() : $action;
 
         if ($actionInst) {
@@ -47,7 +46,7 @@ class ActionButton extends Field
     }
 
     /**
-     * Hide button
+     * Hide button.
      *
      * @param callable
      */
@@ -88,5 +87,13 @@ class ActionButton extends Field
     public function svg(string $svg)
     {
         return $this->withMeta(['svg' => $svg]);
+    }
+
+    /**
+     * Change button color.
+     */
+    public function buttonColor(string $buttonColor)
+    {
+        return $this->withMeta(compact('buttonColor'));
     }
 }
