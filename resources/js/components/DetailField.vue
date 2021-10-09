@@ -1,10 +1,11 @@
 <template>
     <panel-item :field="field">
         <template v-slot:value>
-            <button 
-                class="btn btn-default btn-primary" 
-                @click="confirmActionModalOpened = true" 
+            <button
+                class="btn btn-default btn-primary"
+                @click="confirmActionModalOpened = true"
                 :disabled="field.readonly"
+                :style="`background-color: ${field.buttonColor} !important`"
             >
                 {{ buttonText }}
             </button>
@@ -35,7 +36,7 @@ export default {
     mixins: [FormField, HandlesValidationErrors, InteractsWithResourceInformation],
 
     props: {
-      resource: String,  
+      resource: String,
       resourceName: String,
       resourceId: Number,
       field: Object,
