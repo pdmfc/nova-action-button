@@ -90,6 +90,16 @@ class ActionButton extends Field
     }
 
     /**
+     * Pass a nova icon to be displayed using the Nova Icon component
+     *
+     * @param string $icon
+     */
+    public function icon(string $icon)
+    {
+        return $this->withMeta(['icon' => $icon]);
+    }
+
+    /**
      * Change button color.
      */
     public function buttonColor(string $buttonColor)
