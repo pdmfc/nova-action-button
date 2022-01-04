@@ -3,14 +3,16 @@
         <template v-slot:value>
             <button
                 class="btn btn-default btn-primary flex items-center justify-center"
-                :class="{ hidden }"
+                :class="{ hidden, 'btn-icon': icon }"
                 @click="confirmActionModalOpened = true"
                 :disabled="disabled"
                 :style="`background-color: ${field.buttonColor} !important`"
+                :title="buttonText"
             >
-                <span>{{ buttonText }}</span>
+                <loading v-if="showLoading" :color="field.loadingColor" />
+                <span v-else-if="!field.showOnlyAnIcon" :class="{ 'mr-3': icon }">{{ buttonText }}</span>
                 <component v-if="svg" :is="svg"></component>
-                <icon v-if="icon" :type="icon"></icon>
+                <i v-if="icon" :class="icon"></i>
             </button>
 
             <!-- Action Confirmation Modal -->
@@ -38,6 +40,7 @@ import {
     HandlesValidationErrors,
     InteractsWithResourceInformation
 } from 'laravel-nova';
+import ActionField from '../mixins/ActionField';
 
 export default {
     mixins: [

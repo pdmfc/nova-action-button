@@ -132,7 +132,7 @@ export default {
         },
 
         buttonText() {
-            return this.field.text !== undefined ? this.field.text : this.__('Run');
+            return this.field.text || this.__('Run');
         },
 
         svg() {
