@@ -70,6 +70,17 @@ In order to add a svg to the button, you first need to create a vue component co
 ->svg('VueComponentName')
 ```
 
+## Icons
+In order to show the icons, you need to make sure they are imported in your project. You can use any icon font like [Font Awesome](https://fontawesome.com).
+
+Example usage of FA:
+In `layout.blade.php` add the CSS for FA.
+
+Then just add the`->icon()` method on your action and specify the classes for rendering the icon `fas fa-info`.
+```php
+->icon('fas fa-info')
+```
+
 ### Change button color
 
 To change button color, use `buttonColor('#21b970')` method.

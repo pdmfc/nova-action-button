@@ -25,7 +25,7 @@ class ActionButton extends Field
 
         if ($actionInst) {
             $actionInst->withMeta([
-                'resourceId' => $resourceId
+                'resourceId' => $resourceId,
             ]);
         }
 
@@ -56,7 +56,7 @@ class ActionButton extends Field
     }
 
     /**
-     * Enable loading animation. 
+     * Enable loading animation.
      *
      * @param $callback
      */
@@ -64,7 +64,7 @@ class ActionButton extends Field
     {
         return $this->withMeta(
             [
-                'showLoadingAnimation' => is_callable($callback) ? $callback() : $callback
+                'showLoadingAnimation' => is_callable($callback) ? $callback() : $callback,
             ]
         );
     }
@@ -87,6 +87,20 @@ class ActionButton extends Field
     public function svg(string $svg)
     {
         return $this->withMeta(['svg' => $svg]);
+    }
+
+    /**
+     * Pass a nova icon to be displayed using the Nova Icon component
+     *
+     * @param string $icon
+     * @param bool $showOnlyAnIcon
+     */
+    public function icon(string $icon, bool $showOnlyAnIcon)
+    {
+        return $this->withMeta([
+            'icon' => $icon,
+            'showOnlyAnIcon' => $showOnlyAnIcon,
+        ]);
     }
 
     /**
