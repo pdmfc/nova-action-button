@@ -97,7 +97,7 @@ export default {
 
     computed: {
         selectedResources() {
-            return this.field.resourceId;
+            return [this.field.resourceId];
         },
 
         selectedAction() {

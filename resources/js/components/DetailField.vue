@@ -10,9 +10,13 @@
                 :title="buttonText"
             >
                 <loading v-if="showLoading" :color="field.loadingColor" />
-                <span v-else-if="!field.showOnlyAnIcon" :class="{ 'mr-3': icon }">{{ buttonText }}</span>
-                <component v-if="svg" :is="svg"></component>
-                <i v-if="icon" :class="icon"></i>
+                <span v-else>
+                    <span v-if="!field.showOnlyAnIcon" :class="{ 'mr-3': icon }">
+                        {{ buttonText }}
+                    </span>
+                    <component v-if="svg" :is="svg"></component>
+                    <i v-if="icon" :class="icon"></i>
+                </span>
             </button>
 
             <!-- Action Confirmation Modal -->
@@ -35,19 +39,15 @@
 </template>
 
 <script>
-import {
-    FormField,
-    HandlesValidationErrors,
-    InteractsWithResourceInformation
-} from 'laravel-nova';
+import { FormField, HandlesValidationErrors, InteractsWithResourceInformation } from 'laravel-nova';
 import ActionField from '../mixins/ActionField';
 
 export default {
     mixins: [
-        ActionField,
         FormField,
         HandlesValidationErrors,
-        InteractsWithResourceInformation
+        InteractsWithResourceInformation,
+        ActionField,
     ],
 
     methods: {
