@@ -168,7 +168,6 @@ export default {
             try {
                 const selector = this._getActionSelector();
                 selector.$emit('actionExecuted');
-                // this.$parent.$parent.$children[2].$emit('actionExecuted')
             } catch (e) {
               // Somehow didn't work. We continue so that the response is processed anyway.
             }
