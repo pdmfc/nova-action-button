@@ -119,13 +119,56 @@ export default {
                 })
             })
         },
+        _getActionSelectorFromPanel(panel)
+        {
+            const selector = panel.$children[2] ? panel.$children[2] : null;
+            if (selector)
+            {
+                const $selector = selector.$el;
+                const $button = $selector.querySelector('[dusk="run-action-button"]');
+                if ($button)
+                {
+                    return selector;
+                }
+            }
+            return null;
+        },
+        _getBaseNode(node)
+        {
+            const componentTag = node.$options._componentTag ? node.$options._componentTag : null;
+            if (componentTag === "loading-view")
+            {
+                return node;
+            }
+            return this._getBaseNode(node.$parent);
+        },
+        _getActionSelector()
+        {
+            let selector = this._getActionSelectorFromPanel(
+                this.$parent.$parent
+            )
+            if (selector)
+            {
+                return selector;
+            }
 
+            const baseNode = this._getBaseNode(this.$parent.$parent.$parent);
+            if (baseNode)
+            {
+                selector = this._getActionSelectorFromPanel(
+                    baseNode.$children[1]
+                )
+            }
+            return selector;
+        },
         /**
          * Handle the action response. Typically either a message, download or a redirect.
          */
         handleActionResponse(data) {
             try {
-              this.$parent.$parent.$children[2].$emit('actionExecuted')
+                const selector = this._getActionSelector();
+                selector.$emit('actionExecuted');
+                // this.$parent.$parent.$children[2].$emit('actionExecuted')
             } catch (e) {
               // Somehow didn't work. We continue so that the response is processed anyway.
             }
