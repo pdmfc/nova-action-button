@@ -96,4 +96,12 @@ class ActionButton extends Field
     {
         return $this->withMeta(compact('buttonColor'));
     }
+
+    /**
+     * Disable confirmation modal.
+     */
+    public function withoutConfirmation()
+    {
+        return $this->withMeta(['withoutConfirmation' => true]);
+    }
 }
